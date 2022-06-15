@@ -7,6 +7,11 @@ const repos = $('#repos');
 const following = $('#following');
 const followers = $('#followers');
 const hidden = $('#hidden');
+const user_location = $('#location')
+const email = $('#email')
+const twitter = $('#twitter')
+const joined_data = $('#joined_data')
+const website = $('#website')
 
 $('#icon-toggle-block').click(()=>{
     $('html').toggleClass('dark');
@@ -46,15 +51,21 @@ searchForm .on('submit',(e)=>{
 })
 
 function HandleGitHubRequest(data) {
-    userImage.attr('src', data.avatar_url);
-    username.html(data.login)
-    bio.html(data.bio)
-    followers.html(data.followers)
-    following.html(data.following)
-    repos.html(data.public_repos)
+    UpdataProfile({
+        user_img: data.avatar_url,
+        username: data.login,
+        bio: data.bio,
+        followers: data.followers,
+        following: data.following,
+        public_repos: data.public_repos,
+    })
 
-    if (data.bio == '') {
-        hidden.attr('hidden', 'false')
+    joined_data.html(data.created_at)
+    user_location.html(data.location)
+    website.html(data.blog)
+
+    if (data.twitter_username) {
+        twitter.html(data.twitter_username)
     }
 }
 
@@ -62,37 +73,17 @@ function HandleFacebookRequest(searchInput) {
     
 }
 
-githubApiResponse = {
-    "login": "winning",
-    "id": 936212,
-    "node_id": "MDQ6VXNlcjkzNjIxMg==",
-    "avatar_url": "https://avatars.githubusercontent.com/u/936212?v=4",
-    "gravatar_id": "",
-    "url": "https://api.github.com/users/winning",
-    "html_url": "https://github.com/winning",
-    "followers_url": "https://api.github.com/users/winning/followers",
-    "following_url": "https://api.github.com/users/winning/following{/other_user}",
-    "gists_url": "https://api.github.com/users/winning/gists{/gist_id}",
-    "starred_url": "https://api.github.com/users/winning/starred{/owner}{/repo}",
-    "subscriptions_url": "https://api.github.com/users/winning/subscriptions",
-    "organizations_url": "https://api.github.com/users/winning/orgs",
-    "repos_url": "https://api.github.com/users/winning/repos",
-    "events_url": "https://api.github.com/users/winning/events{/privacy}",
-    "received_events_url": "https://api.github.com/users/winning/received_events",
-    "type": "User",
-    "site_admin": false,
-    "name": null,
-    "company": null,
-    "blog": "",
-    "location": null,
-    "email": null,
-    "hireable": null,
-    "bio": null,
-    "twitter_username": null,
-    "public_repos": 0,
-    "public_gists": 0,
-    "followers": 1,
-    "following": 0,
-    "created_at": "2011-07-24T23:39:16Z",
-    "updated_at": "2021-05-20T19:45:08Z"
-  }
+
+function UpdataProfile(userJsondata) {
+    userImage.attr('src', userJsondata.user_img);
+    username.html(userJsondata.username)
+    bio.html(userJsondata.bio)
+    followers.html(userJsondata.followers)
+    following.html(userJsondata.following)
+    repos.html(userJsondata.public_repos)
+    website.html(userJsondata.website)
+
+    if (userJsondata.bio == '') {
+        hidden.attr('hidden', 'false')
+    }
+}
