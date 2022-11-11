@@ -34,10 +34,17 @@ function SendGitHubRequest(searchInput) {
     fetch(gitUrl)
       .then((response) => response.json())
       .then((data) => {
-        HandleGitHubRequest(data);
+        
+        //checking if the user was found. if not, then alerting the browser
+        if (data.message === 'Not Found'){
+            alert('user not found')
+        }else{
+            HandleGitHubRequest(data);
+        }
+
       })
       .catch((error) => {
-        throw error;
+        console.log(error);
       });
   }
 
